@@ -14,14 +14,15 @@ import {
 	TouchableOpacity,
 	KeyboardAvoidingView,
 } from 'react-native';
-
+import { WithLocalSvg } from 'react-native-svg';
 import AsyncStorage from '@react-native-community/async-storage';
-
+import logo from '../Image/vnpt.svg';
 import Loader from './Components/Loader';
+import { login } from '../Resources/user';
 
 const LoginScreen = ({ navigation }) => {
-	const [userEmail, setUserEmail] = useState('');
-	const [userPassword, setUserPassword] = useState('');
+	const [userEmail, setUserEmail] = useState('aboutreact11@gmail.com');
+	const [userPassword, setUserPassword] = useState('12345');
 	const [loading, setLoading] = useState(false);
 	const [errortext, setErrortext] = useState('');
 
@@ -30,53 +31,55 @@ const LoginScreen = ({ navigation }) => {
 	const handleSubmitPress = () => {
 		setErrortext('');
 		if (!userEmail) {
-			alert('Please fill Email');
+			alert('Bạn chưa nhập người dùng');
 			return;
 		}
 		if (!userPassword) {
-			alert('Please fill Password');
+			alert('Bạn chưa nhập mật khẩu');
 			return;
 		}
 		setLoading(true);
 		let dataToSend = { email: userEmail, password: userPassword };
-		// let formBody = [];
-		// for (let key in dataToSend) {
-		// 	let encodedKey = encodeURIComponent(key);
-		// 	let encodedValue = encodeURIComponent(dataToSend[key]);
-		// 	formBody.push(encodedKey + '=' + encodedValue);
-		// }
-		// formBody = formBody.join('&');
+
+		let formBody = [];
+		for (let key in dataToSend) {
+			let encodedKey = encodeURIComponent(key);
+			let encodedValue = encodeURIComponent(dataToSend[key]);
+			formBody.push(encodedKey + '=' + encodedValue);
+		}
+		formBody = formBody.join('&');
 		// console.log(dataToSend)
 
-		// fetch('http://localhost:3000/api/user/login', {
-		// 	method: 'POST',
-		// 	body: dataToSend,
-		// 	headers: {
-		// 		//Header Defination
-		// 		'Content-Type':
-		// 			'application/x-www-form-urlencoded;charset=UTF-8',
-		// 	},
-		// })
-		// 	.then((response) => response.json())
-		// 	.then((responseJson) => {
-		// 		//Hide Loader
-		// 		setLoading(false);
-		// 		console.log(responseJson);
-		// 		// If server response message same as Data Matched
-		// 		if (responseJson.status === 'success') {
-		// 			AsyncStorage.setItem('user_id', responseJson.data.email);
-		// 			console.log(responseJson.data.email);
-		// 			navigation.replace('DrawerNavigationRoutes');
-		// 		} else {
-		// 			setErrortext(responseJson.msg);
-		// 			console.log('Please check your email id or password');
-		// 		}
-		// 	})
-		// 	.catch((error) => {
-		// 		//Hide Loader
-		// 		setLoading(false);
-		// 		console.error(error);
-		// 	});
+		fetch('http://10.70.38.89:3000/api/user/login', {
+			method: 'POST',
+			body: formBody,
+			headers: {
+				//Header Defination
+				'Content-Type':
+					'application/x-www-form-urlencoded;charset=UTF-8',
+			},
+		})
+			.then((response) => response.json())
+			.then((responseJson) => {
+				//Hide Loader
+				setLoading(false);
+				// console.log(responseJson);
+				// If server response message same as Data Matched
+				if (responseJson.status === 'success') {
+					AsyncStorage.setItem('user_id', responseJson.data.email);
+					AsyncStorage.setItem('fullname', responseJson.data.name);
+					// console.log(responseJson.data.email);
+					navigation.replace('DrawerNavigationRoutes');
+				} else {
+					setErrortext(responseJson.msg);
+					// console.log('Please check your email id or password');
+				}
+			})
+			.catch((error) => {
+				//Hide Loader
+				setLoading(false);
+				// console.error(error);
+			});
 	};
 
 	return (
@@ -92,8 +95,8 @@ const LoginScreen = ({ navigation }) => {
 				<View>
 					<KeyboardAvoidingView enabled>
 						<View style={{ alignItems: 'center' }}>
-							<Image
-								source={require('../Image/aboutreact.png')}
+							<WithLocalSvg
+								asset={logo}
 								style={{
 									width: '50%',
 									height: 100,
@@ -108,7 +111,7 @@ const LoginScreen = ({ navigation }) => {
 								onChangeText={(UserEmail) =>
 									setUserEmail(UserEmail)
 								}
-								placeholder="Enter Email" //dummy@abc.com
+								placeholder={userEmail ? userEmail : "Nhập người dùng"} //dummy@abc.com
 								placeholderTextColor="#8b9cb5"
 								autoCapitalize="none"
 								keyboardType="email-address"
@@ -127,7 +130,7 @@ const LoginScreen = ({ navigation }) => {
 								onChangeText={(UserPassword) =>
 									setUserPassword(UserPassword)
 								}
-								placeholder="Enter Password" //12345
+								placeholder={userPassword ? userPassword : "Nhập mật khẩu"} //12345
 								placeholderTextColor="#8b9cb5"
 								keyboardType="default"
 								ref={passwordInputRef}
@@ -147,13 +150,13 @@ const LoginScreen = ({ navigation }) => {
 							style={styles.buttonStyle}
 							activeOpacity={0.5}
 							onPress={handleSubmitPress}>
-							<Text style={styles.buttonTextStyle}>LOGIN</Text>
+							<Text style={styles.buttonTextStyle}>ĐĂNG NHẬP</Text>
 						</TouchableOpacity>
-						<Text
+						{/* <Text
 							style={styles.registerTextStyle}
 							onPress={() => navigation.navigate('RegisterScreen')}>
 							New Here ? Register
-            </Text>
+            </Text> */}
 					</KeyboardAvoidingView>
 				</View>
 			</ScrollView>
@@ -166,7 +169,7 @@ const styles = StyleSheet.create({
 	mainBody: {
 		flex: 1,
 		justifyContent: 'center',
-		backgroundColor: '#307ecc',
+		backgroundColor: '#ffffff',
 		alignContent: 'center',
 	},
 	SectionStyle: {
@@ -178,10 +181,10 @@ const styles = StyleSheet.create({
 		margin: 10,
 	},
 	buttonStyle: {
-		backgroundColor: '#7DE24E',
+		backgroundColor: '#307ecc',
 		borderWidth: 0,
 		color: '#FFFFFF',
-		borderColor: '#7DE24E',
+		borderColor: '#307ecc',
 		height: 40,
 		alignItems: 'center',
 		borderRadius: 30,

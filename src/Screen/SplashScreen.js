@@ -9,7 +9,7 @@ import {
 	StyleSheet,
 	Image
 } from 'react-native';
-
+import { WithLocalSvg } from 'react-native-svg';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const SplashScreen = ({ navigation }) => {
@@ -27,13 +27,13 @@ const SplashScreen = ({ navigation }) => {
 					value === null ? 'Auth' : 'DrawerNavigationRoutes'
 				),
 			);
-		}, 5000);
+		}, 1000);
 	}, []);
 
 	return (
 		<View style={styles.container}>
-			<Image
-				source={require('../Image/aboutreact.png')}
+			<WithLocalSvg
+				asset={require('../Image/vnpt_white.svg')}
 				style={{ width: '90%', resizeMode: 'contain', margin: 30 }}
 			/>
 			<ActivityIndicator

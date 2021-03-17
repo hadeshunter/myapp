@@ -24,7 +24,7 @@ const homeScreenStack = ({ navigation }) => {
 				name="HomeScreen"
 				component={HomeScreen}
 				options={{
-					title: 'Home', //Set Header Title
+					title: 'Trang chủ', //Set Header Title
 					headerLeft: () => (
 						<NavigationDrawerHeader navigationProps={navigation} />
 					),
@@ -61,7 +61,7 @@ const settingScreenStack = ({ navigation }) => {
 				name="SettingsScreen"
 				component={SettingsScreen}
 				options={{
-					title: 'Settings', //Set Header Title
+					title: 'Cấu hình', //Set Header Title
 				}}
 			/>
 		</Stack.Navigator>
@@ -83,12 +83,12 @@ const DrawerNavigatorRoutes = (props) => {
 			drawerContent={CustomSidebarMenu}>
 			<Drawer.Screen
 				name="homeScreenStack"
-				options={{ drawerLabel: 'Home Screen' }}
+				options={{ drawerLabel: 'Trang chủ' }}
 				component={homeScreenStack}
 			/>
 			<Drawer.Screen
 				name="settingScreenStack"
-				options={{ drawerLabel: 'Setting Screen' }}
+				options={{ drawerLabel: 'Cấu hình' }}
 				component={settingScreenStack}
 			/>
 		</Drawer.Navigator>

@@ -31,9 +31,9 @@ const CustomSidebarMenu = (props) => {
 			<DrawerContentScrollView {...props}>
 				<DrawerItemList {...props} />
 				<DrawerItem
-					label={({ color }) =>
+					label={() =>
 						<Text style={{ color: '#d8d8d8' }}>
-							Logout
+							Đăng xuất
             </Text>
 					}
 					onPress={() => {

@@ -1,6 +1,7 @@
 import { translateError } from "./translate";
 import configureStore from "../Store";
 import { LOGOUT } from "../Store/user/types";
+import { API_URL } from '@env';
 
 export interface ResponseData {
   status: string;
@@ -10,17 +11,14 @@ export interface ResponseData {
 
 export const store = configureStore();
 
-// export const fetcher = (
-//   path: string
-// ) => fetch(process.env.NEXT_PUBLIC_API_URL + path).then(r => r.json())
-
 async function request<T>(
   method: string,
   path: string,
   _headers?: HeadersInit,
   body?: string
 ): Promise<T> {
-  const url = process.env.NEXT_PUBLIC_API_URL + path;
+  const url = API_URL + path;
+  console.log(url);
   const headers = { ..._headers, "Content-Type": "application/json" };
   const response = await fetch(url, { method, headers, body });
 
